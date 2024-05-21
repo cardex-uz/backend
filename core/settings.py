@@ -12,6 +12,12 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 
+try:
+    from conf import settings
+
+except ImportError:
+    settings = None
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,12 +26,20 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-&9cj1))w5eu*at8**xm^2$=tlpr=cevwtl__+=h38ddu)cb6ky'
+SECRET_KEY = getattr(settings, "SECRET_KEY", 'django-insecure-&9cj1))w5eu*at8**xm^2$=tlpr=cevwtl__+=h38ddu)cb6ky')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = getattr(settings, "DEBUG", True)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = getattr(settings, "ALLOWED_HOSTS", [])
+INTERNAL_IPS = getattr(settings, "INTERNAL_IPS", ["127.0.0.1"])
+CSRF_TRUSTED_ORIGINS = getattr(settings, "CSRF_TRUSTED_ORIGINS", ["http://*.127.0.0.1"])
+
+# SECURITY CERTIFICATE
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", getattr(settings, "PROTOCOL", "http"))
+SECURE_SSL_REDIRECT = getattr(settings, "SECURE_SSL_REDIRECT", False)
+SESSION_COOKIE_SECURE = getattr(settings, "SESSION_COOKIE_SECURE", False)
+CSRF_COOKIE_SECURE = getattr(settings, "CSRF_COOKIE_SECURE", False)
 
 
 # Application definition
@@ -37,6 +51,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'channels',
+    'management',
+    'order',
+    'product',
 ]
 
 MIDDLEWARE = [
@@ -74,9 +93,13 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": f"django.db.backends.{getattr(settings, 'ENGINE', 'sqlite3')}",
+        "NAME": getattr(settings, "DB_NAME", "meshkob_db"),
+        "USER": getattr(settings, "DB_USER", "postgres"),
+        "PASSWORD": getattr(settings, "DB_PASSWORD", " "),
+        "HOST": getattr(settings, "DB_HOST", "127.0.0.1"),
+        "PORT": getattr(settings, "DB_PORT", "5432"),
     }
 }
 
