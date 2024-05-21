@@ -95,7 +95,7 @@ WSGI_APPLICATION = 'core.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": f"django.db.backends.{getattr(settings, 'ENGINE', 'sqlite3')}",
-        "NAME": getattr(settings, "DB_NAME", "meshkob_db"),
+        "NAME": getattr(settings, "DB_NAME", "cardex_db"),
         "USER": getattr(settings, "DB_USER", "postgres"),
         "PASSWORD": getattr(settings, "DB_PASSWORD", " "),
         "HOST": getattr(settings, "DB_HOST", "127.0.0.1"),
