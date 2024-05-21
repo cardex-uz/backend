@@ -41,7 +41,7 @@ class AbstractProduct:
         abstract = True
 
 
-class Template(AbstractProduct):
+class Template(AbstractProduct, models.Model):
 
     class Meta:
         db_table = "template"
@@ -49,15 +49,13 @@ class Template(AbstractProduct):
         verbose_name_plural = "Templates"
 
 
-class Product(AbstractProduct):
+class Product(AbstractProduct, models.Model):
     customer = models.ForeignKey(verbose_name="Customer", to="management.Customer", on_delete=models.CASCADE)
+    front_collage = models.FileField(verbose_name="Front collage", upload_to="./")
+    back_collage = models.FileField(verbose_name="Back collage", upload_to="./")
 
     class Meta:
         db_table = "product"
+        ordering = ["-created_at"]
         verbose_name = "Product"
         verbose_name_plural = "Products"
-
-
-
-
-
