@@ -29,7 +29,9 @@ class User(AbstractUser, PermissionsMixin):
 
 
 class Customer(models.Model):
-    user = models.OneToOneField(verbose_name="user", to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.OneToOneField(
+        verbose_name="user", to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="customer"
+    )
 
     class Meta:
         db_table = 'customer'
@@ -39,7 +41,9 @@ class Customer(models.Model):
 
 
 class Provider(models.Model):
-    user = models.OneToOneField(verbose_name="user", to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.OneToOneField(
+        verbose_name="user", to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="provider"
+    )
 
 
 class Device(models.Model):
