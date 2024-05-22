@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 
-from api.product.serializers import CategorySerializer, TypeSerializer, ProductSerializer
-from product.models import Category, Type, Product
+from api.product.serializers import CategorySerializer, TypeSerializer, ProductSerializer, TemplateSerializer
+from product.models import Category, Type, Product, Template
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -15,8 +15,8 @@ class TypeViewSet(viewsets.ModelViewSet):
 
 
 class TemplateViewSet(viewsets.ModelViewSet):
-    queryset = Type.objects.all()
-    serializer_class = TypeSerializer
+    queryset = Template.objects.all()
+    serializer_class = TemplateSerializer
 
 
 class ProductViewSet(viewsets.ModelViewSet):

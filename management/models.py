@@ -1,11 +1,35 @@
+from django.conf import settings
+from django.contrib.auth.models import AbstractUser, PermissionsMixin
 from django.db import models
-from django.contrib.auth.models import User
 from django.utils import timezone
+
+from .managers import UserManager
+
+
+class User(AbstractUser, PermissionsMixin):
+    """ """
+    avatar = models.ImageField(verbose_name="Avatar", upload_to="avatars/", default=settings.NO_AVATAR)
+    phone = models.CharField(verbose_name="Phone Number", max_length=15, unique=True)
+    verify_time = models.DateTimeField(verbose_name="Verify Time", default=timezone.now)
+    created_at = models.DateTimeField(verbose_name="Created Time", auto_now_add=True)
+    updated_at = models.DateTimeField(verbose_name="Updated Time", auto_now=True)
+
+    email = None
+    groups = None
+    user_permissions = None
+
+    objects = UserManager()
+    USERNAME_FIELD = "phone"
+    REQUIRED_FIELDS = []
+
+    class Meta(AbstractUser.Meta):
+        db_table = "user"
+        verbose_name = "User"
+        verbose_name_plural = "Users"
 
 
 class Customer(models.Model):
-    user = models.OneToOneField(verbose_name="user", to=User, on_delete=models.CASCADE)
-    otp_time = models.DateTimeField(default=timezone.now)
+    user = models.OneToOneField(verbose_name="user", to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'customer'
@@ -15,7 +39,7 @@ class Customer(models.Model):
 
 
 class Provider(models.Model):
-    user = models.OneToOneField(verbose_name="user", to=User, on_delete=models.CASCADE)
+    user = models.OneToOneField(verbose_name="user", to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
 
 class Device(models.Model):

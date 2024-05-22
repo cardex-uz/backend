@@ -1,8 +1,7 @@
 from rest_framework import viewsets
-from rest_framework.authtoken.admin import User
 
 from api.management.serializers import UserSerializer, ProviderSerializer, DeviceSerializer
-from management.models import Customer, Provider, Device
+from management.models import User, Customer, Provider, Device
 
 
 class UserViewSet(viewsets.ModelViewSet):
