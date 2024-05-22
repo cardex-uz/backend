@@ -86,6 +86,24 @@ TEMPLATES = [
     },
 ]
 
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': (
+        'rest_framework.filters.SearchFilter',
+        'rest_framework.filters.OrderingFilter',
+        'django_filters.rest_framework.DjangoFilterBackend',
+    ),
+
+    'DEFAULT_PAGINATION_CLASS': 'api.views.CustomPagination',
+    'PAGE_SIZE': 30,
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated'
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+    'COERCE_DECIMAL_TO_STRING': False
+}
+
 WSGI_APPLICATION = 'core.wsgi.application'
 
 
