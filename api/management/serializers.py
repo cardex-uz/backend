@@ -10,6 +10,10 @@ class UserSerializer(serializers.ModelSerializer):
         read_only_fields = ('date_joined', 'last_login')
 
 
+class PhoneSerializer(serializers.Serializer):
+    phone = serializers.CharField()
+
+
 class CustomSerializer(UserSerializer):
     class Meta:
         model = Customer

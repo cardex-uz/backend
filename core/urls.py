@@ -16,10 +16,22 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
+from api.management.consumer import TaskConsumer
 from api.urls import router as api_router
+from api.views import LogoutView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(api_router.urls)),
+    path('api-auth/logout/', LogoutView.as_view(), name='logout'),
+    path('api-auth/', include('rest_framework.urls')),
+    path('verify/', TokenObtainPairView.as_view(), name='verify'),
+    path('refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]
+
+ws_urlpatterns = [
+    path('ws/task/', TaskConsumer.as_asgi()),
+]
+
