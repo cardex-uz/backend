@@ -3,15 +3,19 @@ from rest_framework import serializers
 from order.models import Order, OrderItem
 
 
-class OrderSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Order
-        fields = '__all__'
-
-
 class OrderItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderItem
-        fields = '__all__'
+        exclude = "order",
+        read_only_fields = "cost",
+
+
+class OrderSerializer(serializers.ModelSerializer):
+    items = OrderItemSerializer(many=True)
+
+    class Meta:
+        model = Order
+        exclude = "customer",
+        read_only_fields = "status", "cost"
 
 
